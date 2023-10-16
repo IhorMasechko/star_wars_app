@@ -2,7 +2,7 @@
 
 ## App view
 
-![App view](./assets/prev-3.gif)
+![App view](./assets/StarWarsVideo.mov)
 
 ## Implementation of the project
 
