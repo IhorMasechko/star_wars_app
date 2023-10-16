@@ -1,4 +1,3 @@
-// LikesProvider.tsx
 import React, {createContext, useState, ReactNode, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {SWAPICharacter} from '../services/services';
@@ -16,8 +15,16 @@ export type LikesContextType = {
   characters: SWAPICharacter[];
   updateLikes: (character: SWAPICharacter) => void;
   resetStatistics: () => void;
-  resetCountLikes: () => void;
-  setCharacters: (characters: SWAPICharacter[]) => void; // Add this function
+  setCharacters: (characters: SWAPICharacter[]) => void;
+  cache: {[key: number]: SWAPICharacter[]};
+  setCache: React.Dispatch<
+    React.SetStateAction<{[key: number]: SWAPICharacter[]}>
+  >;
+  cacheLikes: {[key: number]: SWAPICharacter[]};
+  setCacheLikes: React.Dispatch<
+    React.SetStateAction<{[key: number]: SWAPICharacter[]}>
+  >;
+  clearLikes: () => void;
 };
 
 export const LikesProvider: React.FC<LikesProviderProps> = ({children}) => {
@@ -27,9 +34,12 @@ export const LikesProvider: React.FC<LikesProviderProps> = ({children}) => {
     other: 0,
   });
 
-  const [characters, setCharacters] = useState<SWAPICharacter[]>([]); // Initialize characters
+  const [characters, setCharacters] = useState<SWAPICharacter[]>([]);
+  const [cache, setCache] = useState<{[key: number]: SWAPICharacter[]}>({});
+  const [cacheLikes, setCacheLikes] = useState<{
+    [key: number]: SWAPICharacter[];
+  }>({});
 
-  // Load characters from storage when the provider is created
   useEffect(() => {
     async function loadCharactersFromStorage() {
       try {
@@ -44,7 +54,7 @@ export const LikesProvider: React.FC<LikesProviderProps> = ({children}) => {
     }
 
     loadCharactersFromStorage();
-  }, []); // Empty dependency array to load characters once
+  }, []);
 
   const updateLikes = (character: SWAPICharacter) => {
     if (character && character.gender) {
@@ -76,17 +86,8 @@ export const LikesProvider: React.FC<LikesProviderProps> = ({children}) => {
     );
   };
 
-  const resetCountLikes = () => {
-    // console.log('Before', characters);
-    const updatedCharacters = characters.map(character => ({
-      ...character,
-      liked: false,
-    }));
-    // console.log('After', updatedCharacters);
-    AsyncStorage.setItem('characters', JSON.stringify(updatedCharacters));
-    setCharacters(updatedCharacters);
-    resetStatistics();
-    // console.log('Then', updatedCharacters);
+  const clearLikes = () => {
+    setCacheLikes({});
   };
 
   const contextValue: LikesContextType = {
@@ -94,8 +95,12 @@ export const LikesProvider: React.FC<LikesProviderProps> = ({children}) => {
     characters,
     updateLikes,
     resetStatistics,
-    resetCountLikes,
     setCharacters,
+    cache,
+    setCache,
+    cacheLikes,
+    setCacheLikes,
+    clearLikes,
   };
 
   return (
