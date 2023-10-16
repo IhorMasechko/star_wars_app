@@ -67,27 +67,21 @@ const Home: React.FC<ComponentProps> = ({navigation}) => {
 
   const countLikes = async (character: SWAPICharacter) => {
     try {
-      // Toggle the liked status
       character.liked = !character.liked;
 
-      // Get the previously saved likes from AsyncStorage
       const savedLikes = await AsyncStorage.getItem('likes');
       const prevLikes = savedLikes ? JSON.parse(savedLikes) : {};
 
-      // Update the likes based on the character's URL
       if (character.liked) {
         prevLikes[character.url] = true;
       } else {
         delete prevLikes[character.url];
       }
 
-      // Save the updated likes back to AsyncStorage
       await AsyncStorage.setItem('likes', JSON.stringify(prevLikes));
 
-      // Update the context
       likesContext.updateLikes(character);
 
-      // Update the characters state
       const updatedCharacters = characters.map(char =>
         char.url === character.url ? character : char,
       );
@@ -125,12 +119,16 @@ const Home: React.FC<ComponentProps> = ({navigation}) => {
           data={characters}
           keyExtractor={item => item.url}
           renderItem={({item}) => {
+            const isLiked = item.liked; // Store the liked status
+            console.log(isLiked);
+
+            // Render the 'Like' icon based on the stored isLiked variable
             return (
               <View style={styles.characters}>
                 <TouchableOpacity onPress={() => countLikes(item)}>
                   <View style={styles.likes}>
                     <Text style={styles.text}>Like</Text>
-                    {item.liked ? (
+                    {isLiked ? (
                       <Icon name="like2" size={30} color="tomato" />
                     ) : null}
                   </View>

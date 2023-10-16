@@ -76,16 +76,17 @@ export const LikesProvider: React.FC<LikesProviderProps> = ({children}) => {
     );
   };
 
-  const resetCountLikes = async () => {
+  const resetCountLikes = () => {
+    // console.log('Before', characters);
     const updatedCharacters = characters.map(character => ({
       ...character,
-      liked: true,
+      liked: false,
     }));
-
+    // console.log('After', updatedCharacters);
+    AsyncStorage.setItem('characters', JSON.stringify(updatedCharacters));
     setCharacters(updatedCharacters);
     resetStatistics();
-
-    await AsyncStorage.setItem('characters', JSON.stringify(updatedCharacters));
+    // console.log('Then', updatedCharacters);
   };
 
   const contextValue: LikesContextType = {
