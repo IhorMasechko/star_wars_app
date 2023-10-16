@@ -2,7 +2,7 @@
 
 ## App view
 
-![](./star_wars_app/assets/StarWarsVideo.gif)
+![](./star_wars_app/assets/StarWarsVideo.gif|width=10)
 
 ## Implementation of the project
 
