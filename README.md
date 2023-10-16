@@ -2,7 +2,7 @@
 
 ## App view
 
-![](./star_wars_app/assets/StarWarsVideo.gif =350x750)
+![](./star_wars_app/assets/StarWarsVideo.gif)
 
 ## Implementation of the project
 
