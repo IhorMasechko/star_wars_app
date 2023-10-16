@@ -2,8 +2,7 @@
 
 ## App view
 
-![App view](./star_wars_app/assets/StarWarsVideo.gif =350x750)
-<img src="./star_wars_app/assets/StarWarsVideo" width="350" height="750"/>
+![](./star_wars_app/assets/StarWarsVideo.gif =350x750)
 
 ## Implementation of the project
 
